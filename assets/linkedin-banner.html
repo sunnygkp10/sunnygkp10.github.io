@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sunny Tiwari — LinkedIn Banner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* LinkedIn banner: 1584 × 396 px
+   *
+   * LinkedIn profile picture overlays the bottom-left ~280 px wide × 152 px tall.
+   * All text + key visuals stay AWAY from that corner. Text block is now
+   * centered horizontally; the ReAct loop becomes a subtle backdrop on the
+   * right — partly bleeds off-frame so it reads as ambient texture rather
+   * than competing with the centered headline.
+   */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1584px;
+    height: 396px;
+    overflow: hidden;
+    background: #0A0A0E;
+    font-family: 'Outfit', -apple-system, sans-serif;
+  }
+
+  .banner {
+    position: relative;
+    width: 1584px;
+    height: 396px;
+    background:
+      radial-gradient(ellipse 60% 80% at 100% 100%, rgba(168, 85, 247, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 70% at 0% 0%, rgba(0, 229, 255, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 50% at 70% 50%, rgba(57, 255, 20, 0.06) 0%, transparent 60%),
+      #0A0A0E;
+    overflow: hidden;
+  }
+
+  /* Dot-grid pattern */
+  .banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1.5px);
+    background-size: 30px 30px;
+    pointer-events: none;
+  }
+
+  /* Subtle gradient line along the bottom */
+  .banner::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      #00E5FF 30%,
+      #A855F7 60%,
+      transparent 100%);
+    opacity: 0.6;
+  }
+
+  /* ─── ReAct loop — full-strength visual on the right ──────────
+   * Now a real visual element rather than a faded backdrop. Sits
+   * fully on-frame, doesn't overlap the centered text. Higher
+   * opacity so the three nodes pop. */
+  .visual {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 320px;
+    height: 320px;
+    opacity: 0.95;
+    pointer-events: none;
+    z-index: 2;
+    filter: drop-shadow(0 0 24px rgba(168, 85, 247, 0.18));
+  }
+  .visual svg { width: 100%; height: 100%; }
+
+  /* ─── Text block — sits left of the visual ─────────────────
+   * Profile pic occludes bottom-left ~280 px wide. Visual occupies
+   * right ~400 px. Text block lands BETWEEN those zones — visually
+   * "centered" between them, doesn't fight either. */
+  .center {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 460px 0 280px;   /* right padding clears the visual zone;
+                                   left clears the profile-pic zone */
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    border-radius: 999px;
+    color: #00E5FF;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    box-shadow: 0 0 16px rgba(0, 229, 255, 0.18);
+  }
+  .tag-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00E5FF;
+    box-shadow: 0 0 8px #00E5FF;
+  }
+
+  .headline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: #FFFFFF;
+    max-width: 980px;
+  }
+  .headline .accent {
+    background: linear-gradient(135deg, #00E5FF 0%, #A855F7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.78);
+    margin-top: 14px;
+  }
+  .subline em {
+    color: #39FF14;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* Floating particle dots (top half only — avoid bottom-left zone) */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .p1 { width: 4px; height: 4px; background: #00E5FF; top: 60px;  right: 380px; box-shadow: 0 0 8px #00E5FF; }
+  .p2 { width: 3px; height: 3px; background: #A855F7; top: 90px;  right: 1180px; box-shadow: 0 0 6px #A855F7; }
+  .p3 { width: 5px; height: 5px; background: #39FF14; top: 140px; right: 100px; box-shadow: 0 0 10px #39FF14; }
+  .p4 { width: 3px; height: 3px; background: #00E5FF; top: 50px;  right: 700px; box-shadow: 0 0 6px #00E5FF; }
+  .p5 { width: 4px; height: 4px; background: #A855F7; top: 200px; right: 480px; box-shadow: 0 0 8px #A855F7; }
+  .p6 { width: 3px; height: 3px; background: #39FF14; top: 80px;  right: 1380px; box-shadow: 0 0 6px #39FF14; }
+</style>
+</head>
+<body>
+
+<div class="banner">
+
+  <!-- ReAct loop visual (right side, fully visible) -->
+  <div class="visual">
+    <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glowB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <!-- Curves -->
+      <path d="M 200 90 Q 290 110 280 200" stroke="#A855F7" stroke-width="1.5"
+            stroke-opacity="0.7" stroke-dasharray="6 5" fill="none"/>
+      <path d="M 240 250 Q 160 290 80 250" stroke="#39FF14" stroke-width="1.5"
+            stroke-opacity="0.7" stroke-dasharray="6 5" fill="none"/>
+      <path d="M 40 200 Q 30 110 120 90" stroke="#00E5FF" stroke-width="1.5"
+            stroke-opacity="0.7" stroke-dasharray="6 5" fill="none"/>
+
+      <circle cx="160" cy="70" r="46" fill="#0A0A0E"
+              stroke="#A855F7" stroke-width="2" filter="url(#glowB)"/>
+      <text x="160" y="68" text-anchor="middle" font-family="Outfit"
+            font-weight="700" font-size="14" letter-spacing="0.05em" fill="#A855F7">THINK</text>
+      <text x="160" y="83" text-anchor="middle" font-family="Fira Code"
+            font-size="9" fill="#5A6478">state 01</text>
+
+      <circle cx="240" cy="230" r="46" fill="#0A0A0E"
+              stroke="#39FF14" stroke-width="2" filter="url(#glowB)"/>
+      <text x="240" y="228" text-anchor="middle" font-family="Outfit"
+            font-weight="700" font-size="14" letter-spacing="0.05em" fill="#39FF14">ACT</text>
+      <text x="240" y="243" text-anchor="middle" font-family="Fira Code"
+            font-size="9" fill="#5A6478">state 02</text>
+
+      <circle cx="80"  cy="230" r="46" fill="#0A0A0E"
+              stroke="#00E5FF" stroke-width="2" filter="url(#glowB)"/>
+      <text x="80" y="228" text-anchor="middle" font-family="Outfit"
+            font-weight="700" font-size="11" letter-spacing="0.04em" fill="#00E5FF">OBSERVE</text>
+      <text x="80" y="243" text-anchor="middle" font-family="Fira Code"
+            font-size="9" fill="#5A6478">state 03</text>
+    </svg>
+  </div>
+
+  <span class="particle p1"></span>
+  <span class="particle p2"></span>
+  <span class="particle p3"></span>
+  <span class="particle p4"></span>
+  <span class="particle p5"></span>
+  <span class="particle p6"></span>
+
+  <div class="center">
+    <div class="tag">
+      <span class="tag-dot"></span>
+      Agentic System Design
+    </div>
+
+    <h1 class="headline">
+      Engineering AI agents<br>
+      that survive <span class="accent">production.</span>
+    </h1>
+
+    <p class="subline">
+      38-episode YouTube course · Built in the open · <em>Research-backed. Reasoning-first.</em>
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
