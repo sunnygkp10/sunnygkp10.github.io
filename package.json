@@ -1,0 +1,15 @@
+{
+  "name": "sunnytiwari-portfolio",
+  "private": true,
+  "type": "commonjs",
+  "description": "Personal portfolio at sunnytiwari.com — chat-style single page on GitHub Pages.",
+  "scripts": {
+    "build":  "node scripts/build.js",
+    "dev":    "python3 -m http.server 8765 -d src",
+    "serve":  "python3 -m http.server 8765",
+    "resume": "open src/resume.html"
+  },
+  "devDependencies": {
+    "html-minifier-terser": "^7.2.0"
+  }
+}

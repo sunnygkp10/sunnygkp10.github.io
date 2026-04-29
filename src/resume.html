@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunny Tiwari — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ════════════════════════════════════════════════════════════
+   * Modern single-column resume — light mode with sunnytiwari.com's
+   * design language (Outfit + Fira Code, cyan accents, chip pills,
+   * chevron bullets). Single column = prints cleanly across pages.
+   * ════════════════════════════════════════════════════════════ */
+  :root {
+    --bg-page:        #FAFCFD;
+    --bg-card:        #FFFFFF;
+    --bg-accent-soft: #ECFEFF;
+
+    --text:           #0F1419;
+    --text-soft:      #2D3748;
+    --text-mid:       #4A5568;
+    --text-muted:     #6B7280;
+
+    --border:         #E2E8F0;
+    --border-soft:    #EEF2F6;
+
+    --accent-cyan:    #0891B2;
+    --accent-cyan-2:  #155E75;
+    --accent-purple:  #7C3AED;
+    --gradient-accent: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+
+    --font-body:      'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono:      'Fira Code', 'SF Mono', Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg-page);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 9.7pt;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'ss01';
+  }
+
+  /* Subtle dot grid (skipped in print) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: radial-gradient(circle, rgba(8, 145, 178, 0.06) 1px, transparent 1.4px);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+
+  /* ─── Single-column page ────────────────────────────── */
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 7.8in;
+    margin: 0 auto;
+    background: var(--bg-page);
+    padding: 0.55in 0.6in;
+  }
+
+  /* ─── Header ────────────────────────────────────────── */
+  header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 78px;
+    height: 78px;
+  }
+  .avatar-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: var(--gradient-accent);
+  }
+  .avatar {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: url('assets/sunny.jpg');
+    background-size: cover;
+    background-position: center;
+    border: 3px solid var(--bg-page);
+  }
+
+  .id { flex: 1; min-width: 0; }
+  .id .name {
+    font-size: 26pt;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--text);
+  }
+  .id .title {
+    font-size: 11pt;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    margin-top: 0.18rem;
+  }
+  .id .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1rem;
+    row-gap: 0.1rem;
+    margin-top: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 8.7pt;
+    color: var(--text-mid);
+  }
+  .id .contact a {
+    color: var(--text-mid);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--text-muted);
+  }
+  .id .contact a:hover { color: var(--accent-cyan); }
+  .id .contact span.dot {
+    color: var(--accent-cyan);
+    margin-right: 0.25rem;
+  }
+
+  /* ─── Summary callout ──────────────────────────────── */
+  .summary {
+    font-size: 10.3pt;
+    line-height: 1.5;
+    color: var(--text-soft);
+    margin-bottom: 0.85rem;
+    padding: 0.55rem 0.85rem 0.6rem 0.85rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-cyan);
+    border-radius: 4px 8px 8px 4px;
+    box-shadow: 0 1px 2px rgba(15, 20, 25, 0.04);
+  }
+  .summary strong { color: var(--accent-cyan-2); font-weight: 600; }
+
+  /* ─── Section headers ──────────────────────────────── */
+  /* Note: NO `page-break-inside: avoid` on section — that would push
+   * the whole Experience or Projects section to a new page when it
+   * doesn't fit, leaving huge whitespace above. Let sections flow;
+   * keep break-avoid on inner items (.role, .project, .meta-row). */
+  section { margin-bottom: 0.75rem; }
+  section:last-child { margin-bottom: 0; }
+  h2 {
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  h2::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: var(--accent-cyan);
+    border-radius: 50%;
+  }
+  h2::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── Experience entries ───────────────────────────── */
+  .role { margin-bottom: 0.55rem; page-break-inside: avoid; }
+  .role:last-child { margin-bottom: 0; }
+  .role-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.05rem;
+  }
+  .role-head .title {
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+  .role-head .dates {
+    font-family: var(--font-mono);
+    font-size: 8.4pt;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+  }
+  .role .org {
+    font-size: 9.3pt;
+    color: var(--text-mid);
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+  }
+  .role ul { list-style: none; padding: 0; }
+  .role li {
+    position: relative;
+    padding-left: 0.95rem;
+    margin-bottom: 0.16rem;
+    line-height: 1.45;
+    color: var(--text-soft);
+    font-size: 9.6pt;
+  }
+  .role li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    top: -0.05rem;
+    color: var(--accent-cyan);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 11pt;
+  }
+  .role li strong { color: var(--accent-cyan-2); font-weight: 600; }
+
+  /* ─── Project cards ────────────────────────────────── */
+  /* Minimal styling — left-accent border instead of full card with
+   * gradient stripe. Removes the box-shadow and pseudo-element so
+   * Chrome can split a long description across pages cleanly without
+   * fighting the visual envelope. */
+  .project { margin-bottom: 0.45rem; page-break-inside: auto; }
+  .project:last-child { margin-bottom: 0; }
+  .project-card {
+    border-left: 3px solid var(--accent-cyan);
+    padding: 0.1rem 0 0.1rem 0.85rem;
+    page-break-inside: auto;
+  }
+  .project-head { page-break-after: avoid; }
+  .project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 0.18rem;
+  }
+  .project-head .name {
+    font-weight: 700;
+    font-size: 10.5pt;
+    color: var(--text);
+    letter-spacing: -0.005em;
+  }
+  .project-head .dates {
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .project p {
+    font-size: 9.6pt;
+    color: var(--text-soft);
+    line-height: 1.45;
+  }
+  .project p strong { color: var(--text); font-weight: 600; }
+  .project p em {
+    color: var(--accent-cyan-2);
+    font-style: normal;
+    font-weight: 600;
+  }
+  .project .tech {
+    font-family: var(--font-mono);
+    font-size: 8.2pt;
+    color: var(--accent-cyan);
+    margin-top: 0.2rem;
+    padding-top: 0.22rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* ─── Education / Recognition compact rows ─────────── */
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 0.22rem;
+    padding-bottom: 0.22rem;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .meta-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
+  .meta-row .name {
+    font-weight: 600;
+    font-size: 10pt;
+    color: var(--text);
+  }
+  .meta-row .name .org {
+    font-weight: 400;
+    color: var(--text-mid);
+    font-size: 9.5pt;
+    margin-left: 0.35rem;
+  }
+  .meta-row .sub {
+    font-size: 9pt;
+    color: var(--text-mid);
+    margin-top: 0.1rem;
+  }
+  .meta-row .date {
+    font-family: var(--font-mono);
+    font-size: 8.5pt;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* ─── Highlights (Education + Recognition side-by-side) ─── */
+  /* This one DOES get break-avoid since it's compact and would look
+   * weird split across pages. */
+  section.highlights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+    margin-bottom: 0.75rem;
+    page-break-inside: avoid;
+  }
+  section.highlights .hl-col h2 { margin-bottom: 0.45rem; }
+
+  /* ─── Skills (horizontal chips by category) ────────── */
+  .skill-row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0.4rem 0.85rem;
+    align-items: baseline;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .skill-row:last-child { border-bottom: 0; }
+  .skill-row .label {
+    font-family: var(--font-mono);
+    font-size: 7.8pt;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .skill-row .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .chip {
+    font-family: var(--font-body);
+    font-size: 8.2pt;
+    font-weight: 500;
+    padding: 0.13rem 0.55rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    border-radius: 999px;
+  }
+  .chip.accent {
+    background: var(--bg-accent-soft);
+    border-color: rgba(8, 145, 178, 0.3);
+    color: var(--accent-cyan-2);
+    font-weight: 600;
+  }
+
+  /* ─── Floating "Download PDF" button (screen only) ─── */
+  .download-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--gradient-accent);
+    color: white;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 999px;
+    box-shadow:
+      0 4px 14px rgba(8, 145, 178, 0.25),
+      0 1px 3px rgba(15, 20, 25, 0.08);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .download-btn:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 6px 20px rgba(8, 145, 178, 0.35),
+      0 2px 5px rgba(15, 20, 25, 0.1);
+  }
+  .download-btn svg { width: 14px; height: 14px; }
+
+  /* ─── Print rules ────────────────────────────────────
+   * Single-column = page breaks happen between sections
+   * naturally; sidebar problem disappears entirely.
+   *
+   * Margin sources:
+   *   `@page { margin }` — the white space around the page's printable area
+   *   `.page { padding }` — extra breathing room INSIDE the printable area
+   *
+   * Combined we get ~0.7in safe margin on every edge — clears non-print
+   * borders on most physical printers AND looks balanced as a PDF. */
+  @media print {
+    @page { margin: 0.4in 0.45in; size: letter; }
+    html, body {
+      background: white;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body::before { display: none; }
+    .page {
+      padding: 0.15in 0.18in;     /* light inner cushion on top of @page */
+      max-width: none;
+      margin: 0;
+    }
+    .download-btn { display: none !important; }
+    a { text-decoration: none; }
+    /* Note: .role and .meta-row keep break-avoid so individual entries
+     * don't split mid-bullet; section / .project allowed to flow. */
+    .role, .meta-row { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<a class="download-btn" href="assets/resume.pdf" download="sunny-tiwari-resume.pdf" aria-label="Download resume as PDF">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="7 10 12 15 17 10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
+  </svg>
+  Download PDF
+</a>
+
+<div class="page">
+
+  <header>
+    <div class="avatar-wrap">
+      <div class="avatar"></div>
+    </div>
+    <div class="id">
+      <div class="name">Sunny Tiwari</div>
+      <div class="title">Software Development Engineer · Agentic AI &amp; Distributed Systems</div>
+      <div class="contact">
+        <span><span class="dot">◯</span>Edinburgh, UK</span>
+        <a href="mailto:sunnygkp10@gmail.com"><span class="dot">✉</span>sunnygkp10@gmail.com</a>
+        <a href="https://linkedin.com/in/sunnygkp10"><span class="dot">in</span>linkedin.com/in/sunnygkp10</a>
+        <a href="https://github.com/sunnygkp10"><span class="dot">⌘</span>github.com/sunnygkp10</a>
+        <a href="https://youtube.com/@Sunnygkp10"><span class="dot">▶</span>youtube.com/@Sunnygkp10</a>
+        <a href="https://sunnytiwari.com"><span class="dot">↗</span>sunnytiwari.com</a>
+      </div>
+    </div>
+  </header>
+
+  <p class="summary">
+    9 years at Amazon shipping production systems on AWS — Worldwide Capacity Planning,
+    AWS Finance Tech, now <strong>Nautilus</strong> (software for 1.5M Amazonians).
+    <strong>Bar Raiser</strong> certified, repeated <strong>"Exceeds"</strong> ratings.
+    Designed a Micro-Frontend framework adopted org-wide. Currently building
+    <strong>Agentic System Design</strong> — a YouTube course on engineering
+    production-grade AI agents.
+  </p>
+
+  <section>
+    <h2>Experience</h2>
+
+    <div class="role">
+      <div class="role-head">
+        <div class="title">Software Development Engineer (SDE I → SDE II)</div>
+        <div class="dates">2020 — Present</div>
+      </div>
+      <div class="org">Amazon · Worldwide Capacity Planning → AWS Finance Tech → Nautilus</div>
+      <ul>
+        <li>Promoted to <strong>SDE II in 2021</strong>; multiple <strong>"Exceeds"</strong>
+            ratings since. Currently on <strong>Nautilus</strong> in Edinburgh — software used
+            by Amazon's <strong>1.5M employees</strong> globally (NDA-bounded).</li>
+        <li>At AWS Finance Tech, designed a <strong>Micro-Frontend framework</strong> adopted
+            org-wide — cut build times by <strong>~75%</strong>, decoupled all teams' deployments.
+            Owned a <strong>headcount management platform</strong> on Lambda, Fargate, DynamoDB,
+            Step Functions with task-token approvals.</li>
+        <li>Shipped event-driven approval workflows, a zero-downtime platform migration, and
+            custom hot-reload tooling that cut developer iteration time by <strong>~85%</strong>.
+            Maintained <strong>zero critical production incidents</strong>.</li>
+        <li><strong>Bar Raiser</strong> certified (2023); 200+ technical interviews conducted;
+            tech assessor for promotion evaluations.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-head">
+        <div class="title">DevOps Engineer</div>
+        <div class="dates">Jun 2017 — Dec 2019</div>
+      </div>
+      <div class="org">Amazon · Customer Engagement Tech</div>
+      <ul>
+        <li>Won <strong>Star Performer Award (Q4 2019)</strong> for an infrastructure-cost
+            project that reduced spend by <strong>~$150K/month</strong>.</li>
+        <li>Owned deployment, monitoring, and on-call for services powering Amazon's customer
+            service experience. Built internal automation tools used across teams.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-head">
+        <div class="title">Web Team Lead</div>
+        <div class="dates">2014 — 2017</div>
+      </div>
+      <div class="org">Drishticone · KNIT Sultanpur Campus Newsletter</div>
+      <ul>
+        <li>Led an <strong>8-engineer team</strong>; automated the newsletter workflow so it
+            could be maintained by <strong>2 engineers</strong>, freeing capacity for adjacent
+            college web work.</li>
+        <li>Took on <strong>all college-level web development</strong> — international
+            conference sites, technical fest sites, college competition platforms. Ran multiple
+            web-development workshops to grow the team's pipeline.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="highlights">
+    <div class="hl-col">
+      <h2>Education</h2>
+      <div class="meta-row">
+        <div>
+          <div class="name">B.Tech, Information Technology</div>
+          <div class="sub">KNIT Sultanpur · 78.26% · UPSEE rank 4443</div>
+        </div>
+        <div class="date">2013–17</div>
+      </div>
+      <div class="meta-row">
+        <div>
+          <div class="name">Higher Secondary (CBSE)</div>
+          <div class="sub">JNV Kushinagar · 83.16% · 7-yr residential</div>
+        </div>
+        <div class="date">2005–12</div>
+      </div>
+    </div>
+
+    <div class="hl-col">
+      <h2>Recognition</h2>
+      <div class="meta-row">
+        <div>
+          <div class="name">Bar Raiser <span class="org">— Amazon</span></div>
+          <div class="sub">Interview calibration · 200+ interviews</div>
+        </div>
+        <div class="date">2023+</div>
+      </div>
+      <div class="meta-row">
+        <div>
+          <div class="name">Repeated Exceeds Rating</div>
+          <div class="sub">Top performance tier · multiple cycles</div>
+        </div>
+        <div class="date">Amazon</div>
+      </div>
+      <div class="meta-row">
+        <div>
+          <div class="name">Star Performer Award</div>
+          <div class="sub">~$150K/month infra cost reduction</div>
+        </div>
+        <div class="date">Q4 2019</div>
+      </div>
+      <div class="meta-row">
+        <div>
+          <div class="name">AWS Associate Certs</div>
+          <div class="sub">Developer (2017) · Solutions Architect (2020)</div>
+        </div>
+        <div class="date"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Selected Projects</h2>
+
+    <div class="project">
+      <div class="project-card">
+        <div class="project-head">
+          <div class="name">Agentic System Design — YouTube course</div>
+          <div class="dates">2026 — In progress</div>
+        </div>
+        <p>
+          A 38-episode structured course on architecting <strong>production-grade AI agents</strong>.
+          Two parts — concepts (LLM-as-component thesis, ReAct loop, eval-as-spec) followed by a
+          hands-on AWS build (the AI Digest system). Built in the open. <em>6 episodes
+          produced</em> as of 2026. Custom code-driven production system — every episode (slides,
+          animations, recording, post) generated through software, turning a multi-day cycle into
+          a near-one-command operation.
+        </p>
+        <div class="tech">youtube.com/@Sunnygkp10 · sunnytiwari.com</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-card">
+        <div class="project-head">
+          <div class="name">AI Digest — Agentic content pipeline on AWS</div>
+          <div class="dates">2026 — In progress</div>
+        </div>
+        <p>
+          End-to-end agentic system that crawls technical content, deduplicates via embeddings,
+          ranks and summarizes with <strong>Bedrock Claude</strong>, and pauses for admin
+          approval via Telegram (Step Functions task-token pattern). Plus a live-chat widget
+          grounded in the digest's own memory via RAG.
+        </p>
+        <div class="tech">AWS Bedrock · Step Functions · Lambda · DynamoDB · CDK (TypeScript)</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-card">
+        <div class="project-head">
+          <div class="name">Micro-Frontend Framework — AWS Finance Tech</div>
+          <div class="dates">2023 — 2024</div>
+        </div>
+        <p>
+          Designed and shipped an MFE framework adopted <strong>org-wide</strong>. The shared
+          frontend pipeline was hitting scaling walls — ~100 deployments/month, <em>~60-minute
+          build times</em>, and a single team's bug could block all the others from shipping.
+          Decoupled deployment, decoupled testing, established <strong>widget-level
+          ownership</strong>, and cut build times by <em>~75% (60 min → &lt;15 min target)</em>.
+          Made shared-dependency upgrades incremental rather than all-or-nothing. Per-team
+          adoption metrics built in.
+        </p>
+        <div class="tech">React · TypeScript · Module Federation · CloudFront · Lambda</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-card">
+        <div class="project-head">
+          <div class="name">Headcount Management Platform — AWS Finance Tech</div>
+          <div class="dates">2020 — 2023</div>
+        </div>
+        <p>
+          Position-based headcount management platform used across all of Amazon. Real-time
+          tracking of approved HC, plan-management capabilities for finance and business
+          partners, and an approval workflow with notifications.
+        </p>
+        <div class="tech">Java · NestJS · React · TypeScript · Lambda · Fargate · DynamoDB · Step Functions · X-Ray</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Technical Skills</h2>
+
+    <div class="skill-row">
+      <div class="label">Languages</div>
+      <div class="chips">
+        <span class="chip accent">TypeScript</span>
+        <span class="chip">Java</span>
+        <span class="chip">Python</span>
+        <span class="chip">Go</span>
+        <span class="chip">SQL</span>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="label">AWS</div>
+      <div class="chips">
+        <span class="chip accent">Lambda</span>
+        <span class="chip accent">Step Functions</span>
+        <span class="chip accent">Bedrock</span>
+        <span class="chip">DynamoDB</span>
+        <span class="chip">CDK</span>
+        <span class="chip">EventBridge</span>
+        <span class="chip">API Gateway</span>
+        <span class="chip">Fargate</span>
+        <span class="chip">S3</span>
+        <span class="chip">X-Ray</span>
+        <span class="chip">Kinesis</span>
+        <span class="chip">CloudFront</span>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="label">AI / Agents</div>
+      <div class="chips">
+        <span class="chip accent">LLM Orchestration</span>
+        <span class="chip">Multi-Agent</span>
+        <span class="chip">RAG</span>
+        <span class="chip">Evals</span>
+        <span class="chip">MCP</span>
+        <span class="chip">Bedrock Claude</span>
+        <span class="chip">Anthropic API</span>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="label">Frameworks</div>
+      <div class="chips">
+        <span class="chip">React</span>
+        <span class="chip">Next.js</span>
+        <span class="chip">NestJS</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">Module Federation</span>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="label">Practices</div>
+      <div class="chips">
+        <span class="chip">Distributed Systems</span>
+        <span class="chip">Event-Driven</span>
+        <span class="chip">Microservices</span>
+        <span class="chip">System Design</span>
+        <span class="chip">Observability</span>
+        <span class="chip">CI/CD</span>
+        <span class="chip">Mentoring</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

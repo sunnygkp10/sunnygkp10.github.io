@@ -10,3 +10,7 @@ Thumbs.db
 # Local-only experiments
 /tmp/
 *.local
+
+# Node
+node_modules/
+package-lock.json
