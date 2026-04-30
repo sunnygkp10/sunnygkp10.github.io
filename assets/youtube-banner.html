@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sunny Tiwari — YouTube Banner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* YouTube banner: 2560 × 1440 px
+   *
+   * Safe zone (where text + key visuals MUST stay — visible on ALL devices):
+   *   center 1546 × 423 px
+   *   = 507 px from left/right edges
+   *   = 508 px from top/bottom edges
+   *
+   * Outside the safe zone is DECORATIVE only — gets cropped on
+   * mobile / tablet / web small-window viewports.
+   *
+   * Reference (full image visibility per device):
+   *   TV:           2560 × 1440 (full)
+   *   Desktop:      2560 × 423  (top + bottom strips cropped)
+   *   Tablet:       1855 × 423
+   *   Mobile:       1546 × 423  ← smallest = our safe-zone target
+   */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 2560px;
+    height: 1440px;
+    overflow: hidden;
+    background: #0A0A0E;
+    font-family: 'Outfit', -apple-system, sans-serif;
+  }
+
+  .banner {
+    position: relative;
+    width: 2560px;
+    height: 1440px;
+    background:
+      radial-gradient(ellipse 50% 60% at 88% 88%, rgba(168, 85, 247, 0.20) 0%, transparent 60%),
+      radial-gradient(ellipse 45% 55% at 12% 12%, rgba(0, 229, 255, 0.20) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 40% at 70% 50%, rgba(57, 255, 20, 0.07) 0%, transparent 60%),
+      #0A0A0E;
+    overflow: hidden;
+  }
+
+  /* Dot grid pattern — fills full canvas (decorative outside safe zone) */
+  .banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255, 255, 255, 0.05) 1.5px, transparent 2px);
+    background-size: 36px 36px;
+    pointer-events: none;
+  }
+
+  /* Bottom gradient line — full width */
+  .banner::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      #00E5FF 30%,
+      #A855F7 60%,
+      transparent 100%);
+    opacity: 0.7;
+  }
+
+  /* ─── DECORATIVE ZONE — left side (cropped on mobile) ────── */
+  .deco-left-react {
+    position: absolute;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 380px;
+    height: 380px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .deco-left-react svg { width: 100%; height: 100%; }
+
+  /* ─── DECORATIVE ZONE — right side (cropped on mobile) ──── */
+  .deco-right-react {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 380px;
+    height: 380px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .deco-right-react svg { width: 100%; height: 100%; }
+
+  /* ─── SAFE ZONE — center 1546 × 423 (visible on all devices) ── */
+  .safe-zone {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1546px;
+    height: 423px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 5;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 22px;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1.5px solid rgba(0, 229, 255, 0.45);
+    border-radius: 999px;
+    color: #00E5FF;
+    font-family: 'Fira Code', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    box-shadow: 0 0 24px rgba(0, 229, 255, 0.22);
+  }
+  .tag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00E5FF;
+    box-shadow: 0 0 10px #00E5FF;
+  }
+
+  .headline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 92px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #FFFFFF;
+    margin-bottom: 22px;
+  }
+  .headline .accent {
+    background: linear-gradient(135deg, #00E5FF 0%, #A855F7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.78);
+    margin-bottom: 16px;
+  }
+  .subline em {
+    color: #39FF14;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-family: 'Fira Code', monospace;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.08em;
+  }
+  .meta .dot {
+    width: 5px; height: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+  }
+  .meta .channel { color: #00E5FF; }
+  .meta .domain  { color: #A855F7; }
+
+  /* ─── Particle dots scattered (decorative, outside + inside) ── */
+  .particle { position: absolute; border-radius: 50%; pointer-events: none; }
+  .p1 { width: 6px; height: 6px; background: #00E5FF; top: 180px;  right: 600px; box-shadow: 0 0 12px #00E5FF; }
+  .p2 { width: 5px; height: 5px; background: #A855F7; top: 240px;  left: 800px;  box-shadow: 0 0 10px #A855F7; }
+  .p3 { width: 7px; height: 7px; background: #39FF14; top: 1180px; left: 600px;  box-shadow: 0 0 14px #39FF14; }
+  .p4 { width: 5px; height: 5px; background: #00E5FF; top: 1200px; right: 750px; box-shadow: 0 0 10px #00E5FF; }
+  .p5 { width: 6px; height: 6px; background: #A855F7; top: 200px;  left: 1400px; box-shadow: 0 0 12px #A855F7; }
+  .p6 { width: 4px; height: 4px; background: #39FF14; top: 1230px; left: 1700px; box-shadow: 0 0 8px  #39FF14; }
+  .p7 { width: 5px; height: 5px; background: #00E5FF; top: 100px;  left: 200px;  box-shadow: 0 0 10px #00E5FF; }
+  .p8 { width: 4px; height: 4px; background: #A855F7; top: 1300px; right: 200px; box-shadow: 0 0 8px  #A855F7; }
+</style>
+</head>
+<body>
+
+<div class="banner">
+
+  <!-- Decorative ReAct loop on the left (cropped on small viewports) -->
+  <div class="deco-left-react">
+    <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glowL" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <path d="M 200 90  Q 290 110 280 200" stroke="#A855F7" stroke-width="1.8" stroke-opacity="0.7" stroke-dasharray="6 5" fill="none"/>
+      <path d="M 240 250 Q 160 290 80 250"  stroke="#39FF14" stroke-width="1.8" stroke-opacity="0.7" stroke-dasharray="6 5" fill="none"/>
+      <path d="M 40 200  Q 30 110 120 90"   stroke="#00E5FF" stroke-width="1.8" stroke-opacity="0.7" stroke-dasharray="6 5" fill="none"/>
+      <circle cx="160" cy="70"  r="46" fill="#0A0A0E" stroke="#A855F7" stroke-width="2.2" filter="url(#glowL)"/>
+      <text x="160" y="68"  text-anchor="middle" font-family="Outfit" font-weight="700" font-size="14" fill="#A855F7">THINK</text>
+      <text x="160" y="83"  text-anchor="middle" font-family="Fira Code" font-size="9" fill="#5A6478">state 01</text>
+      <circle cx="240" cy="230" r="46" fill="#0A0A0E" stroke="#39FF14" stroke-width="2.2" filter="url(#glowL)"/>
+      <text x="240" y="228" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="14" fill="#39FF14">ACT</text>
+      <text x="240" y="243" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#5A6478">state 02</text>
+      <circle cx="80"  cy="230" r="46" fill="#0A0A0E" stroke="#00E5FF" stroke-width="2.2" filter="url(#glowL)"/>
+      <text x="80" y="228"  text-anchor="middle" font-family="Outfit" font-weight="700" font-size="11" fill="#00E5FF">OBSERVE</text>
+      <text x="80" y="243"  text-anchor="middle" font-family="Fira Code" font-size="9" fill="#5A6478">state 03</text>
+    </svg>
+  </div>
+
+  <!-- Decorative mirror visual on the right (different graphic for variety) -->
+  <div class="deco-right-react">
+    <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glowR" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <linearGradient id="hexGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%"  stop-color="#00E5FF"/>
+          <stop offset="50%" stop-color="#A855F7"/>
+          <stop offset="100%" stop-color="#39FF14"/>
+        </linearGradient>
+      </defs>
+      <!-- Hex grid network -->
+      <g stroke="url(#hexGrad)" stroke-width="1.5" fill="none" stroke-opacity="0.65" filter="url(#glowR)">
+        <!-- Center hex -->
+        <polygon points="160,80 224,116 224,188 160,224 96,188 96,116" />
+        <!-- Top hex -->
+        <polygon points="160,-44 224,-8 224,64 160,100 96,64 96,-8" stroke-opacity="0.35"/>
+        <!-- Bottom hex -->
+        <polygon points="160,204 224,240 224,312 160,348 96,312 96,240" stroke-opacity="0.35"/>
+        <!-- Left hex -->
+        <polygon points="36,140 100,176 100,248 36,284 -28,248 -28,176" stroke-opacity="0.35"/>
+        <!-- Right hex -->
+        <polygon points="284,140 348,176 348,248 284,284 220,248 220,176" stroke-opacity="0.35"/>
+      </g>
+      <!-- Center node -->
+      <circle cx="160" cy="152" r="28" fill="#0A0A0E" stroke="url(#hexGrad)" stroke-width="2"/>
+      <text x="160" y="158" text-anchor="middle" font-family="Outfit" font-weight="800" font-size="22" fill="white">⌬</text>
+    </svg>
+  </div>
+
+  <span class="particle p1"></span>
+  <span class="particle p2"></span>
+  <span class="particle p3"></span>
+  <span class="particle p4"></span>
+  <span class="particle p5"></span>
+  <span class="particle p6"></span>
+  <span class="particle p7"></span>
+  <span class="particle p8"></span>
+
+  <!-- ═══ SAFE ZONE: text block (visible on every device) ═══ -->
+  <div class="safe-zone">
+
+    <div class="tag">
+      <span class="tag-dot"></span>
+      Agentic System Design
+    </div>
+
+    <h1 class="headline">
+      Engineering AI agents that survive <span class="accent">production.</span>
+    </h1>
+
+    <p class="subline">
+      A 38-episode YouTube course · Built in the open · <em>Reasoning-first.</em>
+    </p>
+
+    <div class="meta">
+      <span class="channel">@Sunnygkp10</span>
+      <span class="dot"></span>
+      <span class="domain">sunnytiwari.com</span>
+      <span class="dot"></span>
+      <span>New episode · Saturdays @ 13:00 GMT</span>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
