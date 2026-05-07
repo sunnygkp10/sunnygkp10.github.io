@@ -1,33 +1,41 @@
 #!/usr/bin/env node
 /* =============================================================
- * build.js — minify src/*.html → root *.html for deployment
+ * build.js — minify src/* → root for deployment
  *
- * Why two versions:
- *   src/index.html, src/resume.html  ← readable source you edit
- *   index.html,     resume.html       ← minified, served by GitHub
- *                                       Pages at sunnytiwari.com
+ * Sources (canonical):
+ *   src/index.html
+ *   src/resume.html
+ *   src/agentic-system-design/**       (course landing + lectures + assets)
  *
- * Run:
- *   npm run build
+ * Outputs (regenerated, served by GitHub Pages):
+ *   index.html
+ *   resume.html
+ *   agentic-system-design/**           (HTML minified, other files copied as-is)
  *
- * Output:
- *   - whitespace + comments stripped
- *   - inline CSS minified (via clean-css)
- *   - inline JS minified (via terser)
- *   - typically 60–80% smaller, ~unreadable in View-Source
+ * Per-file behavior under agentic-system-design/:
+ *   .html         → minified (whitespace stripped, inline CSS/JS minified)
+ *   .css, .js     → copied verbatim (already small / cache-friendly)
+ *   .json, .md    → copied verbatim (data + content)
+ *   other (png…)  → copied verbatim
  *
- * The src/ folder remains the canonical source. Don't edit the
- * minified files in the repo root — they'll be overwritten on
- * the next build.
+ * Run: npm run build
+ *
+ * Don't edit minified files in the repo root — they'll be
+ * overwritten on the next build.
  * ============================================================= */
 const path = require('node:path');
 const fs   = require('node:fs');
 const { minify } = require('html-minifier-terser');
 
 const ROOT = path.resolve(__dirname, '..');
-const FILES = [
+
+const TOPLEVEL = [
   { src: 'src/index.html',  out: 'index.html'  },
   { src: 'src/resume.html', out: 'resume.html' },
+];
+
+const MIRROR = [
+  { src: 'src/agentic-system-design', out: 'agentic-system-design' },
 ];
 
 const MINIFY_OPTS = {
@@ -40,8 +48,8 @@ const MINIFY_OPTS = {
   removeEmptyAttributes:        true,
   minifyCSS:                    true,
   minifyJS:                     {
-    compress:  { drop_console: false },     // keep console.warn for debugging
-    mangle:    true,                         // rename local vars/fns
+    compress:  { drop_console: false },
+    mangle:    true,
     format:    { comments: false }
   },
   conservativeCollapse:         false,
@@ -49,10 +57,61 @@ const MINIFY_OPTS = {
 };
 
 function fmt(bytes) { return (bytes / 1024).toFixed(1) + ' KB'; }
+function rel(p)     { return path.relative(ROOT, p); }
+
+async function minifyHtml(srcPath, outPath) {
+  const html = fs.readFileSync(srcPath, 'utf8');
+  const min  = await minify(html, MINIFY_OPTS);
+  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.writeFileSync(outPath, min);
+  return { before: html.length, after: min.length };
+}
+
+function copyVerbatim(srcPath, outPath) {
+  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.copyFileSync(srcPath, outPath);
+  return fs.statSync(outPath).size;
+}
+
+function listFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  const out = [];
+  (function walk(d) {
+    fs.readdirSync(d, { withFileTypes: true }).forEach((entry) => {
+      const full = path.join(d, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else out.push(full);
+    });
+  })(dir);
+  return out;
+}
+
+async function processMirror({ src, out }) {
+  const srcDir = path.join(ROOT, src);
+  const outDir = path.join(ROOT, out);
+  if (!fs.existsSync(srcDir)) {
+    console.log(`  ✗ source missing: ${src}`);
+    return;
+  }
+  console.log(`  ${src} → ${out}`);
+  const files = listFiles(srcDir);
+  for (const file of files) {
+    const relFromSrc = path.relative(srcDir, file);
+    const outFile = path.join(outDir, relFromSrc);
+    if (file.endsWith('.html')) {
+      const { before, after } = await minifyHtml(file, outFile);
+      const pct = (100 - (after / before * 100)).toFixed(1);
+      console.log(`    ✓ ${relFromSrc.padEnd(48)} ${fmt(before)} → ${fmt(after)}  (-${pct}%)`);
+    } else {
+      const size = copyVerbatim(file, outFile);
+      console.log(`    · ${relFromSrc.padEnd(48)} ${fmt(size)} (copied)`);
+    }
+  }
+}
 
 (async () => {
   console.log('');
-  for (const { src, out } of FILES) {
+  for (const { src, out } of TOPLEVEL) {
     const srcPath = path.join(ROOT, src);
     const outPath = path.join(ROOT, out);
 
@@ -61,16 +120,12 @@ function fmt(bytes) { return (bytes / 1024).toFixed(1) + ' KB'; }
       continue;
     }
 
-    const html = fs.readFileSync(srcPath, 'utf8');
-    const min  = await minify(html, MINIFY_OPTS);
-    fs.writeFileSync(outPath, min);
-
-    const before = html.length;
-    const after  = min.length;
-    const pct    = (100 - (after / before * 100)).toFixed(1);
-
+    const { before, after } = await minifyHtml(srcPath, outPath);
+    const pct = (100 - (after / before * 100)).toFixed(1);
     console.log(`  ✓ ${src.padEnd(20)} → ${out.padEnd(15)} ${fmt(before)} → ${fmt(after)}  (-${pct}%)`);
   }
+  console.log('');
+  for (const m of MIRROR) await processMirror(m);
   console.log('');
 })().catch((err) => {
   console.error('  ✗ build failed:', err.message);

@@ -271,6 +271,19 @@
     color: var(--text);
   }
   aside .nav-item:hover .ico { opacity: 1; color: var(--neon-cyan); }
+  aside .nav-item-feature {
+    background: linear-gradient(135deg, rgba(0,229,255,0.10) 0%, rgba(168,85,247,0.10) 100%);
+    border-color: rgba(0, 229, 255, 0.32);
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  aside .nav-item-feature .ico { opacity: 1; color: var(--neon-cyan); }
+  aside .nav-item-feature:hover {
+    background: linear-gradient(135deg, rgba(0,229,255,0.18) 0%, rgba(168,85,247,0.18) 100%);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 4px 14px rgba(0, 229, 255, 0.18);
+  }
 
   aside .socials {
     display: flex;
@@ -577,6 +590,10 @@
 
     <div class="nav-group">
       <div class="nav-label">Explore</div>
+      <a class="nav-item nav-item-feature" href="/agentic-system-design/">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="5 3 19 12 5 21 5 3"/></svg>
+        Agentic System Design course →
+      </a>
       <button class="nav-item" data-key="course">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         About the course
@@ -652,7 +669,7 @@
 const TREE = {
   greeting: {
     body: `<p>Hi — I'm Sunny.</p>
-<p>I build distributed systems at Amazon, and I'm teaching engineers how to architect agentic ones through a YouTube course called <strong>Agentic System Design</strong>.</p>
+<p>I build distributed systems at Amazon, and I'm teaching engineers how to architect agentic ones through a YouTube course called <strong>Agentic System Design</strong> — full curriculum and progress tracking at <a href="/agentic-system-design/" target="_blank" rel="noopener">sunnytiwari.com/agentic-system-design</a>.</p>
 <p>What do you want to know? Pick one below or use the side menu anytime.</p>`,
     chips: ['course', 'building', 'work', 'stack', 'contact', 'resume'],
     instant: true
@@ -662,8 +679,8 @@ const TREE = {
     label: 'Tell me about the course',
     body: `<p><strong>Agentic System Design</strong> is a structured course for engineers who want to build real production-grade AI agents — not another "what is an agent" explainer.</p>
 <p>The thesis: stop treating the LLM as a black box. Treat it as one unreliable component in a distributed system, and engineer the system around it.</p>
-<p>Two parts. <strong>Part 1</strong> (6 episodes) covers the concepts — how LLMs became agents, what they actually do well, and what breaks. <strong>Part 2</strong> (32 episodes) builds a real agentic system on AWS end-to-end: tool design, evals, observability, security, multi-agent orchestration, the whole thing.</p>
-<p>6 episodes produced so far. The channel launches soon.</p>`,
+<p>Three parts. <strong>Part 1 — Concepts</strong> (6 episodes) covers how LLMs became agents, what they actually do well, and what breaks. <strong>Part 2 — Engineering</strong> (37 episodes) builds a real agentic system on AWS end-to-end. <strong>Part 3 — Interview</strong> (3 episodes) re-casts case-study material as live whiteboard interview problems.</p>
+<p>2 episodes live, more landing weekly. Browse the full curriculum and track your progress at <a href="/agentic-system-design/" target="_blank" rel="noopener">/agentic-system-design</a>.</p>`,
     chips: ['why-now', 'syllabus', 'subscribe', 'sample', 'back']
   },
   'why-now': {
@@ -675,11 +692,14 @@ const TREE = {
   },
   syllabus: {
     label: "What's the syllabus?",
-    body: `<p>38 episodes across 13 chapters, in two parts.</p>
+    body: `<p>46 episodes across 15 chapters, in three parts.</p>
 <p><strong>Part 1 — How LLMs became agents</strong> (6 episodes, ~100 min)<br>
 A story-driven walk from Eliza to ChatGPT to today. Episodes on the LLM as engineering primitive, prompting for reasoning, retrieval-augmented generation, tools and function calling, and the ReAct loop.</p>
-<p><strong>Part 2 — Engineering real agentic systems</strong> (32 episodes, ~8.5 hours)<br>
-Build the AI Digest system end-to-end on AWS. Tool design, resilience, memory, evals, observability, security, human-in-the-loop, orchestration, multi-agent, streaming, deployment, case studies.</p>`,
+<p><strong>Part 2 — Engineering real agentic systems</strong> (37 episodes, ~10 hours)<br>
+Build the AI Digest system end-to-end on AWS. Tool design, resilience, memory, evals, observability, security, human-in-the-loop, orchestration, multi-agent, streaming, deployment, case studies.</p>
+<p><strong>Part 3 — The Agentic System Design Interview</strong> (3 episodes, ~40 min)<br>
+You can build it. Now explain it on a whiteboard. The 5-step framework for AI system design interviews plus two worked problems re-cast from the case studies as live whiteboard talks.</p>
+<p>Full curriculum + progress tracking at <a href="/agentic-system-design/" target="_blank" rel="noopener">/agentic-system-design</a>.</p>`,
     chips: ['back']
   },
   subscribe: {

@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "lastUpdated": "2026-05-07",
+  "substackUrl": "https://sunnygkp10.substack.com",
+  "course": {
+    "title": "Agentic System Design",
+    "subtitle": "Engineering reliable systems around the LLM. 46 lectures across 3 parts. One production system built brick by brick — then explained on a whiteboard.",
+    "thesis": "Stop treating the LLM as a black box. Treat it as one unreliable component in a distributed system, and engineer the system around it.",
+    "totalLectures": 46,
+    "totalChapters": 15,
+    "estimatedHours": 16,
+    "channelUrl": "https://youtube.com/@Sunnygkp10"
+  },
+
+  "parts": [
+    {
+      "id": "part1",
+      "number": 1,
+      "label": "Concepts",
+      "title": "How LLMs Became Agents",
+      "blurb": "The 6-decade setup compressed into 6 lectures. Story-mode. Sets the foundations.",
+      "estimatedMinutes": 100,
+
+      "chapters": [
+        {
+          "id": "ch1",
+          "number": 1,
+          "title": "Foundations",
+          "description": "How LLMs evolved into agents — the foundational concepts.",
+          "lectures": [
+            { "id": "ep01", "number": 1, "title": "Agents Are NOT Magic", "slug": "agents-not-magic", "revealed": true, "status": "live", "duration": "14:32", "youtubeId": "MrhI2Pbvw0M", "publishedAt": "2026-05-03" },
+            { "id": "ep02", "number": 2, "title": "What's Inside an LLM? An Engineer's Honest Manual", "slug": "llm-engineering-primitive", "revealed": true, "status": "live", "duration": "", "youtubeId": "Pa2oO_BfF44", "publishedAt": "2026-05-05" },
+            { "id": "ep03" },
+            { "id": "ep04" },
+            { "id": "ep05" },
+            { "id": "ep06" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "part2",
+      "number": 2,
+      "label": "Engineering",
+      "title": "Engineering Real Agentic Systems",
+      "blurb": "Build a production agent on AWS, brick by brick. Each chapter opens with a problem the previous chapter created.",
+      "estimatedMinutes": 600,
+
+      "chapters": [
+        {
+          "id": "ch2",
+          "number": 2,
+          "title": "Design Discipline",
+          "description": "Estimate the math, write the spec, pick the right primitive — and learn the pattern vocabulary the field uses.",
+          "lectures": [
+            { "id": "ep07" },
+            { "id": "ep08" },
+            { "id": "ep09" }
+          ]
+        },
+        {
+          "id": "ch3",
+          "number": 3,
+          "title": "Reliability and Memory",
+          "description": "Tools, retries, memory systems, vector retrieval.",
+          "lectures": [
+            { "id": "ep10" },
+            { "id": "ep11" },
+            { "id": "ep12" },
+            { "id": "ep13" },
+            { "id": "ep14" },
+            { "id": "ep15" }
+          ]
+        },
+        {
+          "id": "ch4",
+          "number": 4,
+          "title": "Dev to Prod",
+          "description": "Local testing and the realities of production deployment.",
+          "lectures": [
+            { "id": "ep16" },
+            { "id": "ep17" }
+          ]
+        },
+        {
+          "id": "ch5",
+          "number": 5,
+          "title": "Evaluation",
+          "description": "Treat evals as specs. Sub-evals, LLM-as-judge, evaluator-optimizer loops, production feedback.",
+          "lectures": [
+            { "id": "ep18" },
+            { "id": "ep19" },
+            { "id": "ep20" },
+            { "id": "ep21" }
+          ]
+        },
+        {
+          "id": "ch6",
+          "number": 6,
+          "title": "Observability and Cost",
+          "description": "Tracing, alerting, and the economics of inference.",
+          "lectures": [
+            { "id": "ep22" },
+            { "id": "ep23" },
+            { "id": "ep24" }
+          ]
+        },
+        {
+          "id": "ch7",
+          "number": 7,
+          "title": "Security, Safety, Human-in-the-loop",
+          "description": "Threat models, prompt injection, agent identity, approval gates.",
+          "lectures": [
+            { "id": "ep25" },
+            { "id": "ep26" },
+            { "id": "ep27" },
+            { "id": "ep28" },
+            { "id": "ep29" }
+          ]
+        },
+        {
+          "id": "ch8",
+          "number": 8,
+          "title": "Orchestration",
+          "description": "Planner / executor patterns and reflection.",
+          "lectures": [
+            { "id": "ep30" },
+            { "id": "ep31" }
+          ]
+        },
+        {
+          "id": "ch9",
+          "number": 9,
+          "title": "Multi-Agent and Interop",
+          "description": "Coordinating multiple agents · consensus voting · search-and-vote sampling family · MCP and A2A interop.",
+          "lectures": [
+            { "id": "ep32" },
+            { "id": "ep33" },
+            { "id": "ep34" }
+          ]
+        },
+        {
+          "id": "ch10",
+          "number": 10,
+          "title": "Frameworks",
+          "description": "LangGraph, Mastra, Vercel AI SDK, Claude Agent SDK compared.",
+          "lectures": [
+            { "id": "ep35" }
+          ]
+        },
+        {
+          "id": "ch11",
+          "number": 11,
+          "title": "Streaming and Live Chat",
+          "description": "Real-time agent responses with WebSockets, buffering, interrupts.",
+          "lectures": [
+            { "id": "ep36" }
+          ]
+        },
+        {
+          "id": "ch12",
+          "number": 12,
+          "title": "Infrastructure",
+          "description": "IaC, deployment pipelines, scheduled and event-driven execution.",
+          "lectures": [
+            { "id": "ep37" },
+            { "id": "ep38" },
+            { "id": "ep39" }
+          ]
+        },
+        {
+          "id": "ch13",
+          "number": 13,
+          "title": "Case Studies",
+          "description": "Deconstructing AI Digest, Claude Code, Deep Research.",
+          "lectures": [
+            { "id": "ep40" },
+            { "id": "ep41" },
+            { "id": "ep42" }
+          ]
+        },
+        {
+          "id": "ch14",
+          "number": 14,
+          "title": "Capstone",
+          "description": "AI Digest v∞ — the final production iteration.",
+          "lectures": [
+            { "id": "ep43" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "part3",
+      "number": 3,
+      "label": "Interview",
+      "title": "The Agentic System Design Interview",
+      "blurb": "You can build it. Now explain it on a whiteboard. Senior interviews now ask 'design Cursor' and 'design Deep Research' — here's the framework, plus worked problems on real interview asks.",
+      "estimatedMinutes": 40,
+
+      "chapters": [
+        {
+          "id": "ch15",
+          "number": 15,
+          "title": "The Interview",
+          "description": "The 5-step framework for AI system design interviews · worked problems re-cast from case studies as live whiteboard talks.",
+          "locked": true,
+          "lockedReason": "Activates after Eps 1–43 are recorded — the worked problems re-cast Eps 41 + 42 case-study material.",
+          "lectures": [
+            { "id": "ep44" },
+            { "id": "ep45" },
+            { "id": "ep46" }
+          ]
+        }
+      ]
+    }
+  ]
+}
