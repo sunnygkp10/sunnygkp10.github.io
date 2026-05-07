@@ -45,7 +45,7 @@ Despite safety training, the model can be tricked into producing content it was 
 
 **Engineering response:** don't trust the model to enforce safety. Build safety at the system boundary — input filtering, output sanitization, scope limits on what tools the model is allowed to call. (We dedicate **Chapter 7** to this.)
 
-## Tokens — 90 seconds
+## Tokens
 
 The model doesn't see characters. It sees **tokens** — chunks of text that range from a single character (`a`) to whole common words (`the`) to fragments (`ing`).
 
@@ -57,7 +57,7 @@ Why care?
 
 Run text through OpenAI's tokenizer or `tiktoken` to see your real token counts. *Don't estimate from word count.*
 
-## Sampling — 60 seconds
+## Sampling
 
 When the model outputs a token, you choose which one to sample. Two knobs matter:
 

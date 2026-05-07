@@ -197,7 +197,7 @@
       "number": 3,
       "label": "Interview",
       "title": "The Agentic System Design Interview",
-      "blurb": "The interview framework for agentic system design. The same builds, re-cast as whiteboard answers for senior engineering rounds.",
+      "blurb": "You can build it. Now explain it on a whiteboard. Senior interviews now ask 'design Cursor' and 'design Deep Research' — here's the framework, plus worked problems on real interview asks.",
       "estimatedMinutes": 40,
 
       "chapters": [
