@@ -1287,11 +1287,10 @@ a { color: var(--neon-cyan); text-decoration: none; }
   .topbar-hamburger { display: inline-flex; }
 
   /* No rail strip on mobile — sidebar takes 0 space when collapsed */
-  .app { grid-template-columns: 1fr; }
-  .app.sb-collapsed .sidebar { display: none; }
-
-  /* On mobile, "expanded" shows as overlay drawer */
+  .app,
+  .app.sb-collapsed,
   .app:not(.sb-collapsed) { grid-template-columns: 1fr; }
+  .app.sb-collapsed .sidebar { display: none; }
   .app:not(.sb-collapsed) .sidebar {
     display: flex;
     position: fixed;
