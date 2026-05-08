@@ -312,18 +312,14 @@ function wireProgressTooltip() {
 function wireSidebarToggle() {
   const app = document.querySelector('.app');
   const toggle = document.getElementById('sb-toggle');
-  const hamburger = document.getElementById('topbar-hamburger');
   if (!app || !toggle) return;
 
-  // Default state on mobile is "collapsed" (sidebar fully hidden, hamburger in topbar). Desktop: expanded.
+  // Default state on mobile is "collapsed" (rail). Desktop: expanded.
   if (window.innerWidth <= 800) {
     app.classList.add('sb-collapsed');
   }
 
   toggle.addEventListener('click', () => app.classList.toggle('sb-collapsed'));
-  if (hamburger) {
-    hamburger.addEventListener('click', () => app.classList.toggle('sb-collapsed'));
-  }
 
   // Mobile: clicking outside expanded sidebar should collapse it
   document.addEventListener('click', (e) => {
@@ -331,7 +327,6 @@ function wireSidebarToggle() {
     if (app.classList.contains('sb-collapsed')) return;
     if (e.target.closest('.sidebar')) return;
     if (e.target.closest('#sb-toggle')) return;
-    if (e.target.closest('#topbar-hamburger')) return;
     app.classList.add('sb-collapsed');
   });
   // Mobile: clicking a lecture link should auto-collapse
