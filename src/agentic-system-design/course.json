@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastUpdated": "2026-05-08",
+  "lastUpdated": "2026-05-09",
   "substackUrl": "https://sunnygkp10.substack.com",
   "course": {
     "title": "Agentic System Design",
@@ -31,7 +31,17 @@
             { "id": "ep01", "number": 1, "title": "Agents Are NOT Magic", "slug": "agents-not-magic", "revealed": true, "status": "live", "duration": "14:32", "youtubeId": "MrhI2Pbvw0M", "publishedAt": "2026-05-03" },
             { "id": "ep02", "number": 2, "title": "What's Inside an LLM? An Engineer's Honest Manual", "slug": "llm-engineering-primitive", "revealed": true, "status": "live", "duration": "", "youtubeId": "Pa2oO_BfF44", "publishedAt": "2026-05-05" },
             { "id": "ep03", "number": 3, "title": "Prompting the LLM to Reason", "slug": "prompting-llm-to-reason", "revealed": true, "status": "live", "duration": "", "youtubeId": "rSTARr2JoSA", "publishedAt": "2026-05-08" },
-            { "id": "ep04" },
+            {
+              "id": "ep04",
+              "number": 4,
+              "title": "Why Your AI Lies — RAG",
+              "slug": "why-your-ai-lies-rag",
+              "revealed": true,
+              "status": "live",
+              "duration": "",
+              "youtubeId": "51ma74uS_Ow",
+              "publishedAt": "2026-05-09"
+            },
             { "id": "ep05" },
             { "id": "ep06" }
           ]
