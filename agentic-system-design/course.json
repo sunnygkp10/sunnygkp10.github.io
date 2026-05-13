@@ -42,7 +42,17 @@
               "youtubeId": "51ma74uS_Ow",
               "publishedAt": "2026-05-09"
             },
-            { "id": "ep05" },
+            {
+              "id": "ep05",
+              "number": 5,
+              "title": "Your AI Is Trapped — Function Calling",
+              "slug": "give-it-hands",
+              "revealed": true,
+              "status": "live",
+              "duration": "",
+              "youtubeId": "5IE_FXHOYrU",
+              "publishedAt": "2026-05-13"
+            },
             { "id": "ep06" }
           ]
         }

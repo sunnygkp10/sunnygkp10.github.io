@@ -66,6 +66,15 @@ function findLecture(course, id) {
     next: idx < flat.length - 1 ? flat[idx + 1] : null
   };
 }
+function chapterCount(chapter) {
+  const released = chapter.lectures.filter((l) => l.status === 'live' && l.revealed).length;
+  const total = chapter.lectures.length;
+  return { released, total };
+}
+
+/* Message shown when a locked chapter is clicked. */
+const LOCK_MESSAGE_HTML = `<p>Each chapter drops as I finish building it.</p>`;
+
 function chapterStatus(chapter) {
   const live = chapter.lectures.filter((l) => l.status === 'live').length;
   const coming = chapter.lectures.filter((l) => l.status === 'coming').length;
@@ -214,10 +223,11 @@ function renderSidebarChapter(chapter, progress, currentLectureId, activeChapter
 
   const icon = isLocked ? '🔒' : (hasRevealed ? '›' : '⏳');
 
+  const cnt = chapterCount(chapter);
   wrap.innerHTML = `
-    <button class="sb-chapter-head" type="button" ${isLocked ? 'disabled aria-disabled="true"' : ''}>
+    <button class="sb-chapter-head" type="button" ${isLocked ? 'aria-disabled="true"' : ''}>
       <span class="sb-chapter-num">${chapter.number}</span>
-      <span class="sb-chapter-title">${escape(chapter.title)}</span>
+      <span class="sb-chapter-title">${escape(chapter.title)} <span class="sb-chapter-count">(${cnt.released}/${cnt.total})</span></span>
       <span class="sb-chapter-icon">${icon}</span>
     </button>
     <div class="sb-chapter-body"></div>
@@ -230,6 +240,16 @@ function renderSidebarChapter(chapter, progress, currentLectureId, activeChapter
       body.appendChild(renderSidebarLecture(lec, progress, currentLectureId, `${chapter.number}.${idx + 1}`));
     });
     wrap.querySelector('.sb-chapter-head').addEventListener('click', () => wrap.classList.toggle('open'));
+  } else if (isLocked) {
+    // Append the unlock tooltip and wire click-to-toggle.
+    const tip = document.createElement('div');
+    tip.className = 'lock-tooltip';
+    tip.innerHTML = LOCK_MESSAGE_HTML;
+    wrap.appendChild(tip);
+    wrap.querySelector('.sb-chapter-head').addEventListener('click', (e) => {
+      e.stopPropagation();
+      wrap.classList.toggle('tooltip-open');
+    });
   }
 
   return wrap;
@@ -308,6 +328,44 @@ function wireProgressTooltip() {
   });
 }
 
+/* ─── Lock tooltip: close on outside click (any locked chapter) ─── */
+function wireLockTooltip() {
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.chapter-lock')) return;
+    if (e.target.closest('.sb-chapter.locked .sb-chapter-head')) return;
+    if (e.target.closest('.lock-tooltip')) return;
+    document.querySelectorAll('.tooltip-open').forEach((el) => el.classList.remove('tooltip-open'));
+  });
+}
+
+/* ─── Mobile hamburger menu — injected into topbrand ──────────
+ * Visible only on mobile (CSS gates with @media). Toggles the
+ * same .sb-collapsed class the existing sb-toggle uses, so the
+ * existing sidebar logic keeps working unchanged. */
+function wireHamburger() {
+  const inner = document.querySelector('.topbrand-inner');
+  const app = document.querySelector('.app');
+  if (!inner || !app || document.getElementById('hamburger-toggle')) return;
+
+  const btn = document.createElement('button');
+  btn.className = 'hamburger-toggle';
+  btn.id = 'hamburger-toggle';
+  btn.type = 'button';
+  btn.setAttribute('aria-label', 'Toggle menu');
+  btn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.2" stroke-linecap="round">
+      <line x1="3" y1="6"  x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>`;
+  inner.prepend(btn);
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    app.classList.toggle('sb-collapsed');
+  });
+}
+
 /* ─── Sidebar collapse/expand toggle ────────────────────────── */
 function wireSidebarToggle() {
   const app = document.querySelector('.app');
@@ -376,20 +434,32 @@ function renderMainChapter(chapter, progress) {
   wrap.className = 'chapter' + (hasLive ? ' has-live' : '') + (isLocked ? ' locked' : '');
   wrap.id = chapter.id;
 
+  const cnt = chapterCount(chapter);
   const lockMarkup = isLocked
-    ? '<div class="chapter-status"><div class="chapter-lock" title="Coming soon">🔒</div></div>'
+    ? `<div class="chapter-status">
+         <button class="chapter-lock" type="button" aria-label="Why is this locked?">🔒</button>
+         <div class="lock-tooltip">${LOCK_MESSAGE_HTML}</div>
+       </div>`
     : '';
 
   wrap.innerHTML = `
     <header class="chapter-head">
       <div class="chapter-num">${chapter.number}</div>
       <div class="chapter-meta">
-        <div class="chapter-title">${escape(chapter.title)}</div>
+        <div class="chapter-title">${escape(chapter.title)} <span class="chapter-count">(${cnt.released}/${cnt.total})</span></div>
         <div class="chapter-desc">${escape(chapter.description || '')}</div>
       </div>
       ${lockMarkup}
     </header>
   `;
+
+  if (isLocked) {
+    const btn = wrap.querySelector('.chapter-lock');
+    if (btn) btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      wrap.classList.toggle('tooltip-open');
+    });
+  }
 
   const revealedWithIdx = chapter.lectures
     .map((lec, idx) => ({ lec, subNumber: `${chapter.number}.${idx + 1}` }))
@@ -603,8 +673,10 @@ function escape(str) {
 /* ─── Entry point ───────────────────────────────────────────── */
 async function init() {
   startParticles();
+  wireHamburger();
   wireSidebarToggle();
   wireThemeToggle();
+  wireLockTooltip();
 
   try {
     const res = await fetch(COURSE_DATA_URL, { cache: 'no-cache' });
